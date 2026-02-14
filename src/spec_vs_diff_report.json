@@ -1,0 +1,97 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-14T04:46:20.369Z",
+  "summary": "Diff adds a Motoko backend actor with per-user resume/location storage, job postings, job matching, and application entities, plus a frontend UI for authentication, resume/cover letter/location editors, jobs list/detail, and an apply flow. Some required behaviors (job editing, sorting by match score, and recording 'Go to Application' link-open events) are not evidenced in the provided diff summary.",
+  "missing_requirements": [
+    {
+      "id": "REQ-2",
+      "requirement": "User can add, edit, and delete job entries.",
+      "reason": "Adding and deleting are evidenced (JobFormDialog add + JobDetail delete), but no UI or API usage for editing an existing job entry is shown in the diff summary.",
+      "evidence": [
+        "frontend/src/components/JobFormDialog.tsx",
+        "frontend/src/components/JobDetail.tsx"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "requirement": "User can sort jobs by match score (descending).",
+      "reason": "JobsFiltersBar exposes a sort selector and JobsList keeps a sortBy state, but the computed list shown (filteredAndSortedJobs) applies filtering only and shows no sorting implementation in the provided snippet.",
+      "evidence": [
+        "frontend/src/components/JobsFiltersBar.tsx",
+        "frontend/src/components/JobsList.tsx"
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "requirement": "Record an event/timestamp that the user opened the application link for that job.",
+      "reason": "JobDetail opens the application URL in a new tab, and calls ensureApplication(), but no explicit backend call to record a 'link opened' event/timestamp is shown in the frontend, and the backend snippet does not show a dedicated function/event for recording link-open actions.",
+      "evidence": [
+        "frontend/src/components/JobDetail.tsx",
+        "backend/main.mo"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "User profile setup/management (name and optional email) with a mandatory onboarding dialog.",
+      "reason": "BuildRequest focuses on resume/cover letter/location, jobs, matching, and application workflow; a separate user profile (name/email) and profile setup dialog were not requested.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/ProfileSetupDialog.tsx",
+        "frontend/src/App.tsx"
+      ]
+    },
+    {
+      "description": "Admin-token based access control initialization via URL parameter (caffeineAdminToken) and explicit permission checks (admin/user).",
+      "reason": "BuildRequest specifies Internet Identity only, but does not request admin-token bootstrapping or an admin role/permission system.",
+      "evidence": [
+        "frontend/src/hooks/useActor.ts",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "Additional application statuses beyond 'Applied' (interviewing/offered/rejected/pending).",
+      "reason": "Requirement only asks to support marking as 'Applied' and storing history/status; additional statuses are extra and not explicitly requested.",
+      "evidence": [
+        "backend/main.mo",
+        "frontend/src/components/ApplicationStatusPill.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.64,
+  "changed_files": [
+    "all_files_summary.json",
+    "backend/main.mo",
+    "frontend-file-summaries.txt",
+    "frontend/index.css",
+    "frontend/index.html",
+    "frontend/src/App.tsx",
+    "frontend/src/components/AppLayout.tsx",
+    "frontend/src/components/ApplicationStatusPill.tsx",
+    "frontend/src/components/ApplyFlowDialog.tsx",
+    "frontend/src/components/AuthGate.tsx",
+    "frontend/src/components/CoverLetterEditor.tsx",
+    "frontend/src/components/JobDetail.tsx",
+    "frontend/src/components/JobFormDialog.tsx",
+    "frontend/src/components/JobsFiltersBar.tsx",
+    "frontend/src/components/JobsList.tsx",
+    "frontend/src/components/LocationSettings.tsx",
+    "frontend/src/components/LoginButton.tsx",
+    "frontend/src/components/MatchScoreBadge.tsx",
+    "frontend/src/components/ProfileSetupDialog.tsx",
+    "frontend/src/components/ResumeEditor.tsx",
+    "frontend/src/hooks/useActor.ts",
+    "frontend/src/hooks/useInternetIdentity.ts",
+    "frontend/src/hooks/useJobApplications.ts",
+    "frontend/src/hooks/useJobMatchScore.ts",
+    "frontend/src/hooks/useJobPostings.ts",
+    "frontend/src/hooks/useResumeProfile.ts",
+    "frontend/src/hooks/useUserProfile.ts",
+    "frontend/src/index.css",
+    "frontend/src/main.tsx",
+    "frontend/src/utils/urlParams.ts",
+    "frontend/tailwind.config.js",
+    "project_state.json"
+  ]
+}

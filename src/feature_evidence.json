@@ -1,0 +1,163 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-implement-authenticated-per-user-data-storage-for-resume-text-cover-letter-text-and-user-specified-location-city-region-optional-radius-so-the-app-can-persist-and-reload-a-user-s-job-search-materials-across-sessions",
+      "featureTitle": "Implement authenticated per-user data storage for resume text, cover letter text, and user-specified location (city/region + optional radius) so the app can persist and reload a user’s job-search materials across sessions.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AuthGate.tsx",
+        "frontend/src/components/CoverLetterEditor.tsx",
+        "frontend/src/components/LocationSettings.tsx",
+        "frontend/src/components/LoginButton.tsx",
+        "frontend/src/components/ProfileSetupDialog.tsx",
+        "frontend/src/components/ResumeEditor.tsx",
+        "frontend/src/hooks/useResumeProfile.ts",
+        "frontend/src/hooks/useUserProfile.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-job-intake-feature-that-lets-a-user-create-job-entries-with-at-least-title-company-location-text-job-description-and-an-optional-application-url-contact-details-so-the-app-has-job-descriptions-to-match-against-the-user-s-resume",
+      "featureTitle": "Add a job intake feature that lets a user create job entries with at least: title, company, location text, job description, and an optional application URL/contact details, so the app has job descriptions to match against the user’s resume.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/JobFormDialog.tsx",
+        "frontend/src/components/JobsList.tsx",
+        "frontend/src/hooks/useJobPostings.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-implement-a-deterministic-matching-scoring-system-that-compares-each-saved-job-description-to-the-user-s-saved-resume-and-produces-a-match-score-plus-a-short-list-of-matched-keywords-phrases-used-to-justify-the-score",
+      "featureTitle": "Implement a deterministic matching/scoring system that compares each saved job description to the user’s saved resume and produces a match score plus a short list of matched keywords/phrases used to justify the score.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/JobDetail.tsx",
+        "frontend/src/components/JobsList.tsx",
+        "frontend/src/components/MatchScoreBadge.tsx",
+        "frontend/src/hooks/useJobMatchScore.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-3"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-location-filtering-based-on-the-user-s-manually-entered-location-and-the-job-s-location-text-supporting-at-minimum-a-show-only-jobs-whose-location-text-contains-the-user-s-location-string-and-b-show-all-jobs-when-location-filter-is-disabled",
+      "featureTitle": "Add location filtering based on the user’s manually entered location and the job’s location text, supporting at minimum: (a) show only jobs whose location text contains the user’s location string, and (b) show all jobs when location filter is disabled.",
+      "files": [
+        "frontend/src/components/JobsFiltersBar.tsx",
+        "frontend/src/components/JobsList.tsx",
+        "frontend/src/hooks/useResumeProfile.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-create-an-application-workflow-per-job-that-can-generate-an-application-draft-containing-resume-text-cover-letter-text-editable-and-a-submission-checklist-support-marking-a-job-as-applied-and-storing-application-history-status-per-job",
+      "featureTitle": "Create an application workflow per job that can generate an application draft containing: resume text, cover letter text (editable), and a submission checklist; support marking a job as 'Applied' and storing application history/status per job.",
+      "files": [
+        "frontend/src/components/ApplicationStatusPill.tsx",
+        "frontend/src/components/ApplyFlowDialog.tsx",
+        "frontend/src/components/JobDetail.tsx",
+        "frontend/src/components/JobsList.tsx",
+        "frontend/src/hooks/useJobApplications.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-5"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-if-a-job-has-an-application-url-provide-a-go-to-application-action-that-opens-the-url-in-a-new-tab-and-record-that-the-user-initiated-the-application-from-the-app-do-not-attempt-to-automate-third-party-form-submission-without-explicit-user-provided-api-endpoints",
+      "featureTitle": "If a job has an application URL, provide a 'Go to Application' action that opens the URL in a new tab, and record that the user initiated the application from the app; do not attempt to automate third-party form submission without explicit user-provided API endpoints.",
+      "files": [
+        "frontend/src/components/JobDetail.tsx",
+        "frontend/src/hooks/useJobApplications.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-6"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-choose-and-apply-a-coherent-visual-theme-colors-typography-spacing-and-component-styling-suitable-for-a-productivity-job-tracking-app-and-enforce-it-consistently-across-all-pages",
+      "featureTitle": "Choose and apply a coherent visual theme (colors, typography, spacing, and component styling) suitable for a productivity/job-tracking app, and enforce it consistently across all pages.",
+      "files": [
+        "frontend/src/App.tsx",
+        "frontend/src/components/AppLayout.tsx",
+        "frontend/src/index.css",
+        "frontend/tailwind.config.js"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-7"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

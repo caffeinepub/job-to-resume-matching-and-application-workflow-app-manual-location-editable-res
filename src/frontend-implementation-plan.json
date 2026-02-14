@@ -1,0 +1,251 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Job-to-resume matching and application workflow (manual location + editable resume/cover letter)",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Gate app content behind Internet Identity login and persist per-user resume, cover letter, and manual location inputs with load/save UX.",
+      "acceptanceCriteria": [
+        "User can sign in (using the project’s existing Internet Identity flow) and see only their own saved resume/cover letter/location data.",
+        "User can create/update/save resume text and cover letter text.",
+        "User can set location as text input (e.g., City, State/Country) and optionally a numeric radius (miles/km).",
+        "Data remains available after refresh/reload."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "create",
+          "description": "Create the main authenticated app shell that requires Internet Identity login before showing any resume/cover letter/location data; wire top-level navigation between Resume, Cover Letter, and Jobs views. Use the selected authorization component patterns (login gating, clearing cached data on logout); verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useUserProfile.ts",
+          "operation": "create",
+          "description": "Add React Query hooks to fetch/save the caller UserProfile (name setup) using backendInterface.getCallerUserProfile/saveCallerUserProfile and expose derived UI state to prevent profile-setup modal flash. Use the selected authorization component guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ProfileSetupDialog.tsx",
+          "operation": "create",
+          "description": "Create a first-login dialog that asks for a human-readable name (and optional email if desired) and saves it; ensure it only appears when authenticated and profile is null. Use shadcn-ui dialog/form primitives for consistent UI; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/AuthGate.tsx",
+          "operation": "create",
+          "description": "Create an auth gate wrapper that (1) shows login CTA when unauthenticated, (2) shows loading states while actor/profile queries load, and (3) renders children only for authenticated users. Use the selected authorization component login gating guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/LoginButton.tsx",
+          "operation": "create",
+          "description": "Add a login/logout button component using the existing useInternetIdentity hook; on logout, clear React Query cache to remove cached personal data. Use the selected authorization component login button guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useResumeProfile.ts",
+          "operation": "create",
+          "description": "Add React Query hooks to load/save ResumeProfile (resumeText, coverLetterText, location) via backendInterface.getResumeProfile/saveResumeProfile, handling unauthenticated/unauthorized errors gracefully in UI. Use the selected authorization component error-handling guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ResumeEditor.tsx",
+          "operation": "create",
+          "description": "Create a Resume editor screen with a large text area and a Save action bound to useResumeProfile; include status/last-saved feedback and validation. Use shadcn-ui textarea/button/card components for layout; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/CoverLetterEditor.tsx",
+          "operation": "create",
+          "description": "Create a Cover Letter editor screen with a large text area and a Save action bound to useResumeProfile. Use shadcn-ui textarea/button/card components for layout; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/LocationSettings.tsx",
+          "operation": "create",
+          "description": "Create a location settings section that captures manual city/region/country text and optional numeric radius (km) and persists it as part of ResumeProfile. Use shadcn-ui input/select components for consistent styling; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Provide CRUD UI for job intake (create/edit/delete) with list, search, and persistence through backend calls.",
+      "acceptanceCriteria": [
+        "User can add, edit, and delete job entries.",
+        "Job entry form includes fields: title, company, location (text), job description (large text), and optional application URL.",
+        "Jobs list view shows saved jobs and supports basic search (by title/company)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useJobPostings.ts",
+          "operation": "create",
+          "description": "Add React Query hooks for listing and mutating JobPosting data using backendInterface.getJobPostings/getJobPosting/addJobPosting/deleteJobPosting (and any available update pattern if present), with cache invalidation and error messaging. Use the selected authorization component error-handling guidance for unauthorized traps; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/JobFormDialog.tsx",
+          "operation": "create",
+          "description": "Create a job intake form (title, company, location text, job description, optional application URL/contact details) used for both add and edit flows. Use shadcn-ui dialog/form/input/textarea components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/JobsList.tsx",
+          "operation": "create",
+          "description": "Create a jobs list view that renders saved jobs, supports search by title/company, and provides add/edit/delete actions. Use shadcn-ui table/list, buttons, and input components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/JobRowActions.tsx",
+          "operation": "create",
+          "description": "Add row-level actions (Edit/Delete/View) with confirmation for deletes and proper query invalidation. Use shadcn-ui dropdown/alert-dialog primitives; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire the JobsList view into the main navigation and ensure creating/editing/deleting jobs is reachable from the authenticated area. Use the selected authorization component gating patterns to keep jobs private; verify the component's usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Display deterministic match scores per job and show matched keywords explanation; enable sorting by score.",
+      "acceptanceCriteria": [
+        "For each job, the UI displays a numeric match score (e.g., 0–100) computed from resume text vs. job description text.",
+        "The job detail view shows an explanation section listing matched keywords/terms contributing to the score.",
+        "User can sort jobs by match score (descending)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useJobMatchScore.ts",
+          "operation": "create",
+          "description": "Add a React Query hook to fetch MatchScore for a job via backendInterface.calculateJobMatch, with caching keyed by jobId and graceful handling when resume profile is missing. Verify the component's usage instructions before implementing (no component required, but keep behavior consistent with auth/error patterns)."
+        },
+        {
+          "path": "frontend/src/components/MatchScoreBadge.tsx",
+          "operation": "create",
+          "description": "Create a compact match score display component (0–100) for list rows and detail headers. Use shadcn-ui badge/progress primitives for consistent visual language; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/JobDetail.tsx",
+          "operation": "create",
+          "description": "Create a job detail view that shows full job description plus an explanation section listing matched keywords/terms from MatchScore. Use shadcn-ui card/accordion components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/JobsList.tsx",
+          "operation": "modify",
+          "description": "Add a sort control to sort jobs by match score (descending) and render each row with MatchScoreBadge; ensure sorting works even when some jobs have no score yet (e.g., treat as 0). Use shadcn-ui select/toggle-group components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire navigation from Jobs list into JobDetail (e.g., selecting a job opens detail panel/route-like state) so matched keywords explanation is reachable. Verify any shadcn-ui overlay usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Add a UI toggle to enable/disable location filtering by case-insensitive substring match against the user-entered location string.",
+      "acceptanceCriteria": [
+        "User can toggle location filtering on/off.",
+        "When enabled, jobs list filters to those whose location text matches the user-entered location string (case-insensitive).",
+        "When disabled, all jobs are shown."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/JobsFiltersBar.tsx",
+          "operation": "create",
+          "description": "Create a filters bar for the Jobs list including a location-filter toggle and helper text showing the active location string source (from saved manual location). Use shadcn-ui switch/checkbox and tooltip components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/JobsList.tsx",
+          "operation": "modify",
+          "description": "Apply location filtering when enabled by checking whether job.location contains the user’s saved location string (case-insensitive); when disabled, show all jobs. Integrate the JobsFiltersBar and ensure behavior is responsive on mobile. Verify shadcn-ui usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useResumeProfile.ts",
+          "operation": "modify",
+          "description": "Expose a derived, user-entered location string suitable for filtering (e.g., city/region/country concatenation as shown in UI) and keep it in sync with saved manual location fields. Verify shadcn-ui usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "summary": "Implement per-job application workflow UI: generate and edit application draft, show checklist, save draft, and mark job as Applied with history/status reflected in the list.",
+      "acceptanceCriteria": [
+        "From a job detail page, user can open an 'Apply' flow that shows the current resume and an editable cover letter for that application.",
+        "User can save an application draft without marking as applied.",
+        "User can mark the job as 'Applied' and the UI reflects applied status in the job list.",
+        "Backend stores per-job application status and timestamps for the signed-in user."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/hooks/useJobApplications.ts",
+          "operation": "create",
+          "description": "Add React Query hooks to list/get applications and mutate them via backendInterface.getJobApplications/getJobApplication/createApplication/updateApplicationCoverLetter/updateApplicationStatus with cache invalidation. Use the selected authorization component error-handling guidance; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ApplyFlowDialog.tsx",
+          "operation": "create",
+          "description": "Create an Apply flow UI launched from JobDetail that (1) shows current resume text (read-only), (2) provides an editable cover letter specific to that application, (3) displays a submission checklist UI, and (4) supports saving draft vs. marking as Applied. Use shadcn-ui dialog, textarea, checkbox, and button components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/ApplicationStatusPill.tsx",
+          "operation": "create",
+          "description": "Create a small status indicator (pending/applied/etc.) for jobs list and detail based on existing applications. Use shadcn-ui badge components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/JobDetail.tsx",
+          "operation": "modify",
+          "description": "Add an 'Apply' action that opens ApplyFlowDialog, pre-creates or loads an existing application for the job, and allows updating cover letter and status. Use shadcn-ui button components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/components/JobsList.tsx",
+          "operation": "modify",
+          "description": "Reflect applied status in the jobs list (e.g., status pill and/or styling) by joining job postings with application data from useJobApplications. Verify shadcn-ui usage instructions before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "summary": "Provide 'Go to Application' action for jobs with an application URL, open in a new tab, and record a user-initiated application event timestamp via existing backend capabilities.",
+      "acceptanceCriteria": [
+        "Job detail shows a button/link to open the application URL when present.",
+        "Clicking the action opens the URL in a new tab/window.",
+        "The app records an event/timestamp that the user opened the application link for that job."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/JobDetail.tsx",
+          "operation": "modify",
+          "description": "When applicationUrl is present, render a 'Go to Application' action that opens the URL in a new tab/window using safe browser APIs. On click, invoke existing backend capabilities to record the initiation event (e.g., ensure an application record exists for the job and update relevant application fields/status as supported). Use shadcn-ui button components; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/hooks/useJobApplications.ts",
+          "operation": "modify",
+          "description": "Add a helper method used by JobDetail to 'ensure application exists' for a job (creating if missing) and to persist an initiation record using available backend functions, then refresh application state shown in UI. Verify authorization error handling per selected authorization guidance before implementing."
+        }
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "summary": "Apply a cohesive, responsive productivity-oriented theme (not blue/purple primary) consistently across authenticated screens.",
+      "acceptanceCriteria": [
+        "All core screens (Resume, Cover Letter, Jobs list, Job detail/Apply flow) share consistent styling.",
+        "Theme does not rely on blue/purple as the primary palette.",
+        "Layouts are responsive and usable on mobile widths."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/index.css",
+          "operation": "create",
+          "description": "Define/adjust global CSS variables and base Tailwind layers to apply a cohesive theme (e.g., neutral + green/amber primary), ensuring primary palette is not blue/purple and typography/spacing is consistent. Verify shadcn-ui theming expectations before implementing."
+        },
+        {
+          "path": "frontend/tailwind.config.js",
+          "operation": "modify",
+          "description": "Adjust Tailwind theme extensions as needed to support the chosen palette and consistent spacing/typography tokens used across screens, keeping responsiveness intact and avoiding blue/purple primary emphasis. Verify shadcn-ui configuration expectations before implementing."
+        },
+        {
+          "path": "frontend/src/components/AppLayout.tsx",
+          "operation": "create",
+          "description": "Create a shared layout component (header/nav/content container) used by all core screens to enforce consistent spacing, typography, and responsive behavior. Use shadcn-ui layout primitives (card/separator) where helpful; verify the component's usage instructions before implementing."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap all screens with AppLayout and ensure consistent styling is applied across Resume, Cover Letter, Jobs list, and Job detail/Apply flow views. Verify shadcn-ui usage instructions before implementing."
+        }
+      ]
+    }
+  ]
+}

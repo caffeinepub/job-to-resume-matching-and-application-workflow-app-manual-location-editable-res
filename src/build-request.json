@@ -1,0 +1,165 @@
+{
+  "kind": "build_request",
+  "title": "Job-to-resume matching and application workflow app (manual location + editable resume/cover letter)",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Implement authenticated per-user data storage for resume text, cover letter text, and user-specified location (city/region + optional radius) so the app can persist and reload a user’s job-search materials across sessions.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Create an app that automatically matches jobs and resume from locations near me and apply.",
+          "Should have an option to edit cover letter and resume if needed.",
+          "Create an app that matches job description with resume and applies automatically."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can sign in (using the project’s existing Internet Identity flow) and see only their own saved resume/cover letter/location data.",
+        "User can create/update/save resume text and cover letter text.",
+        "User can set location as text input (e.g., City, State/Country) and optionally a numeric radius (miles/km).",
+        "Data remains available after refresh/reload."
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Add a job intake feature that lets a user create job entries with at least: title, company, location text, job description, and an optional application URL/contact details, so the app has job descriptions to match against the user’s resume.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Create an app that automatically matches jobs and resume from locations near me and apply.",
+          "Create an app that matches job description with resume and applies automatically."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can add, edit, and delete job entries.",
+        "Job entry form includes fields: title, company, location (text), job description (large text), and optional application URL.",
+        "Jobs list view shows saved jobs and supports basic search (by title/company)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Implement a deterministic matching/scoring system that compares each saved job description to the user’s saved resume and produces a match score plus a short list of matched keywords/phrases used to justify the score.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Create an app that automatically matches jobs and resume from locations near me and apply.",
+          "Create an app that matches job description with resume and applies automatically."
+        ]
+      },
+      "acceptanceCriteria": [
+        "For each job, the UI displays a numeric match score (e.g., 0–100) computed from resume text vs. job description text.",
+        "The job detail view shows an explanation section listing matched keywords/terms contributing to the score.",
+        "User can sort jobs by match score (descending)."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Add location filtering based on the user’s manually entered location and the job’s location text, supporting at minimum: (a) show only jobs whose location text contains the user’s location string, and (b) show all jobs when location filter is disabled.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Create an app that automatically matches jobs and resume from locations near me and apply."
+        ]
+      },
+      "acceptanceCriteria": [
+        "User can toggle location filtering on/off.",
+        "When enabled, jobs list filters to those whose location text matches the user-entered location string (case-insensitive).",
+        "When disabled, all jobs are shown."
+      ]
+    },
+    {
+      "id": "REQ-5",
+      "text": "Create an application workflow per job that can generate an application draft containing: resume text, cover letter text (editable), and a submission checklist; support marking a job as 'Applied' and storing application history/status per job.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Should have an option to edit cover letter and resume if needed.",
+          "Create an app that matches job description with resume and applies automatically."
+        ]
+      },
+      "acceptanceCriteria": [
+        "From a job detail page, user can open an 'Apply' flow that shows the current resume and an editable cover letter for that application.",
+        "User can save an application draft without marking as applied.",
+        "User can mark the job as 'Applied' and the UI reflects applied status in the job list.",
+        "Backend stores per-job application status and timestamps for the signed-in user."
+      ]
+    },
+    {
+      "id": "REQ-6",
+      "text": "If a job has an application URL, provide a 'Go to Application' action that opens the URL in a new tab, and record that the user initiated the application from the app; do not attempt to automate third-party form submission without explicit user-provided API endpoints.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "applies automatically",
+          "auto application"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Job detail shows a button/link to open the application URL when present.",
+        "Clicking the action opens the URL in a new tab/window.",
+        "The app records an event/timestamp that the user opened the application link for that job."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Choose and apply a coherent visual theme (colors, typography, spacing, and component styling) suitable for a productivity/job-tracking app, and enforce it consistently across all pages.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2",
+          "msg-4"
+        ],
+        "quotes": [
+          "Create an app that automatically matches jobs and resume from locations near me and apply.",
+          "Create an app that matches job description with resume and applies automatically."
+        ]
+      },
+      "acceptanceCriteria": [
+        "All core screens (Resume, Cover Letter, Jobs list, Job detail/Apply flow) share consistent styling.",
+        "Theme does not rely on blue/purple as the primary palette.",
+        "Layouts are responsive and usable on mobile widths."
+      ]
+    }
+  ],
+  "constraints": [
+    "Backend must remain a single Motoko actor (all logic in the main actor).",
+    "Do not edit files under frontend paths marked immutable by the platform (compose existing UI components instead).",
+    "Do not use geolocation/GPS; 'near me' must be supported via manual location input.",
+    "Do not integrate external LLM/AI services; implement matching without OpenAI/Anthropic/other AI service integrations.",
+    "No third-party authentication providers; use Internet Identity only.",
+    "No real-time/WebSocket features."
+  ],
+  "nonGoals": [
+    "Scraping job boards or integrating specific job board APIs without user-provided endpoints and credentials.",
+    "Fully automated third-party job application form submission (auto-filling and submitting on external sites).",
+    "Parsing PDF/DOC resumes; initial version uses plain text resume/cover letter inputs.",
+    "True distance calculations/geocoding for 'nearby' filtering."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

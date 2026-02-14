@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --radius: 0.5rem;
+        --background: 0.98 0.01 120;
+        --foreground: 0.2 0.02 140;
+        --card: 1 0 0;
+        --card-foreground: 0.2 0.02 140;
+        --popover: 1 0 0;
+        --popover-foreground: 0.2 0.02 140;
+        --primary: 0.55 0.18 145;
+        --primary-foreground: 0.98 0.01 120;
+        --secondary: 0.92 0.03 110;
+        --secondary-foreground: 0.25 0.03 140;
+        --muted: 0.94 0.02 120;
+        --muted-foreground: 0.5 0.02 140;
+        --accent: 0.75 0.15 85;
+        --accent-foreground: 0.15 0.02 140;
+        --destructive: 0.55 0.22 25;
+        --destructive-foreground: 0.98 0 0;
+        --border: 0.88 0.02 120;
+        --input: 0.88 0.02 120;
+        --ring: 0.55 0.18 145;
+        --chart-1: 0.55 0.18 145;
+        --chart-2: 0.65 0.15 170;
+        --chart-3: 0.75 0.15 85;
+        --chart-4: 0.45 0.12 200;
+        --chart-5: 0.7 0.18 60;
+    }
+
+    .dark {
+        --background: 0.15 0.02 140;
+        --foreground: 0.95 0.01 120;
+        --card: 0.18 0.02 140;
+        --card-foreground: 0.95 0.01 120;
+        --popover: 0.2 0.02 140;
+        --popover-foreground: 0.95 0.01 120;
+        --primary: 0.65 0.18 145;
+        --primary-foreground: 0.15 0.02 140;
+        --secondary: 0.25 0.03 140;
+        --secondary-foreground: 0.92 0.02 120;
+        --muted: 0.25 0.03 140;
+        --muted-foreground: 0.65 0.02 140;
+        --accent: 0.75 0.15 85;
+        --accent-foreground: 0.95 0.01 120;
+        --destructive: 0.6 0.22 25;
+        --destructive-foreground: 0.95 0 0;
+        --border: 0.25 0.03 140;
+        --input: 0.25 0.03 140;
+        --ring: 0.65 0.18 145;
+        --chart-1: 0.65 0.18 145;
+        --chart-2: 0.7 0.15 170;
+        --chart-3: 0.75 0.15 85;
+        --chart-4: 0.55 0.12 200;
+        --chart-5: 0.75 0.18 60;
+    }
+
+    * {
+        @apply border-border;
+    }
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "rlig" 1, "calt" 1;
+    }
+}
+
+@layer utilities {
+    .text-balance {
+        text-wrap: balance;
+    }
+}

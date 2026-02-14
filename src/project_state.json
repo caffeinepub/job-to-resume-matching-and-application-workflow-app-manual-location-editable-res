@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "Build a job application app that matches job descriptions to a user's resume (including nearby/location-based jobs) using an open-source AI API for scalable matching, and can automatically apply while allowing users to edit their resume and cover letter.",
+  "architectural_notes": [
+    "Use an open-source AI API for job/resume semantic matching and ranking."
+  ],
+  "known_issues": [],
+  "isFixRequest": false,
+  "existing_features": [
+    {
+      "id": "feature-implement-authenticated-per-user-data-storage-for-resume-text-cover-letter-text-and-user-specified-location-city-region-optional-radius-so-the-app-can-persist-and-reload-a-user-s-job-search-materials-across-sessions",
+      "title": "Implement authenticated per-user data storage for resume text, cover letter text, and user-specified location (city/region + optional radius) so the app can persist and reload a user’s job-search materials across sessions.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-job-intake-feature-that-lets-a-user-create-job-entries-with-at-least-title-company-location-text-job-description-and-an-optional-application-url-contact-details-so-the-app-has-job-descriptions-to-match-against-the-user-s-resume",
+      "title": "Add a job intake feature that lets a user create job entries with at least: title, company, location text, job description, and an optional application URL/contact details, so the app has job descriptions to match against the user’s resume.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-a-deterministic-matching-scoring-system-that-compares-each-saved-job-description-to-the-user-s-saved-resume-and-produces-a-match-score-plus-a-short-list-of-matched-keywords-phrases-used-to-justify-the-score",
+      "title": "Implement a deterministic matching/scoring system that compares each saved job description to the user’s saved resume and produces a match score plus a short list of matched keywords/phrases used to justify the score.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-location-filtering-based-on-the-user-s-manually-entered-location-and-the-job-s-location-text-supporting-at-minimum-a-show-only-jobs-whose-location-text-contains-the-user-s-location-string-and-b-show-all-jobs-when-location-filter-is-disabled",
+      "title": "Add location filtering based on the user’s manually entered location and the job’s location text, supporting at minimum: (a) show only jobs whose location text contains the user’s location string, and (b) show all jobs when location filter is disabled.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-an-application-workflow-per-job-that-can-generate-an-application-draft-containing-resume-text-cover-letter-text-editable-and-a-submission-checklist-support-marking-a-job-as-applied-and-storing-application-history-status-per-job",
+      "title": "Create an application workflow per job that can generate an application draft containing: resume text, cover letter text (editable), and a submission checklist; support marking a job as 'Applied' and storing application history/status per job.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-if-a-job-has-an-application-url-provide-a-go-to-application-action-that-opens-the-url-in-a-new-tab-and-record-that-the-user-initiated-the-application-from-the-app-do-not-attempt-to-automate-third-party-form-submission-without-explicit-user-provided-api-endpoints",
+      "title": "If a job has an application URL, provide a 'Go to Application' action that opens the URL in a new tab, and record that the user initiated the application from the app; do not attempt to automate third-party form submission without explicit user-provided API endpoints.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-choose-and-apply-a-coherent-visual-theme-colors-typography-spacing-and-component-styling-suitable-for-a-productivity-job-tracking-app-and-enforce-it-consistently-across-all-pages",
+      "title": "Choose and apply a coherent visual theme (colors, typography, spacing, and component styling) suitable for a productivity/job-tracking app, and enforce it consistently across all pages.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Match job descriptions to user's resume, including location/nearby filtering",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Automatically apply to matched jobs",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Allow user to edit resume and cover letter before applying",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Integrate an open-source AI API for scalable/limitless matching",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Job-to-resume matching and application workflow app (manual location + editable resume/cover letter)",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}
